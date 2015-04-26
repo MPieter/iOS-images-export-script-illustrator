@@ -1,7 +1,8 @@
 /**
  * Author: Pieter Meiresone
  */
-var selectedExportOptions = {};
+var selectedAppIconExportOptions = {};
+var selectedImageExportOptions = {};
 
 var iosAppIconExportOptions = [
     {
@@ -43,18 +44,18 @@ var iosAppIconExportOptions = [
 
 var iosImageExportOptions = [
     {
-        name: "@1x",
-        scaleFactor: 50,
+        name: "",
+        scaleFactor: 100,
         type: "1x"
     },
     {
         name: "@2x",
-        scaleFactor: 100,
+        scaleFactor: 200,
         type: "2x"
     },
     {
         name: "@3x",
-        scaleFactor: 150,
+        scaleFactor: 300,
         type: "3x"
     }
 ];
@@ -66,20 +67,27 @@ if(document && folder) {
     var dialog = new Window("dialog","Select export sizes");
     var osGroup = dialog.add("group");
 
-    var iosCheckboxes = createSelectionPanel("App Icon", iosAppIconExportOptions, osGroup);
-    var imageCheckboxes = createSelectionPanel("Images", iosImageExportOptions, osGroup);
+    var iosCheckboxes = createSelectionPanel("App Icon", iosAppIconExportOptions, selectedAppIconExportOptions, osGroup);
+    var imageCheckboxes = createSelectionPanel("Images", iosImageExportOptions, selectedImageExportOptions, osGroup);
 
     var buttonGroup = dialog.add("group");
     var okButton = buttonGroup.add("button", undefined, "Export");
     var cancelButton = buttonGroup.add("button", undefined, "Cancel");
     
     okButton.onClick = function() {
-        for (var key in selectedExportOptions) {
-            if (selectedExportOptions.hasOwnProperty(key)) {
-                var item = selectedExportOptions[key];
-                exportToFile(item.name, item.size, item.type);
+        // for (var key in selectedAppIconExportOptions) {
+        //     if (selectedAppIconExportOptions.hasOwnProperty(key)) {
+        //         var item = selectedAppIconExportOptions[key];
+        //         exportAppIcon(item.name, item.size, item.type);
+        //     }
+        // }
+        for (var key in selectedImageExportOptions) {
+            if (selectedImageExportOptions.hasOwnProperty(key)) {
+                var item = selectedImageExportOptions[key];
+                exportImage(item.name, item.scaleFactor, item.type)
             }
         }
+
         this.parent.parent.close();
     };
     
@@ -90,7 +98,7 @@ if(document && folder) {
     dialog.show();
 }
 
-function exportToFile(name, iconSize, type) {
+function exportAppIcon(name, iconSize, type) {
     var expFolder = new Folder(folder.fsName);
 
 	if (!expFolder.exists) {
@@ -115,7 +123,29 @@ function exportToFile(name, iconSize, type) {
 	}
 };
 
-function createSelectionPanel(name, array, parent) {
+function exportImage(name, scale, type) {
+    for (var i = 0; i < app.activeDocument.artboards.length; i++) {
+        var activeArtboard = app.activeDocument.artboards[i];
+
+        var expFolder = new Folder(folder.fsName + "/" + activeArtboard.name + ".imageset" + "/");
+
+        if (!expFolder.exists) {
+            expFolder.create();
+        }
+
+        var exportOptions = new ExportOptionsPNG24();
+        var type = ExportType.PNG24;
+        var fileSpec = new File(expFolder.fsName + "/" + activeArtboard.name + name + ".png");
+        exportOptions.verticalScale = scale;
+        exportOptions.horizontalScale = scale;
+        exportOptions.antiAliasing = true;
+        exportOptions.transparency = true;
+        exportOptions.artBoardClipping = true;
+        app.activeDocument.exportFile (fileSpec, type, exportOptions);
+    }
+}
+
+function createSelectionPanel(name, array, selected, parent) {
     var panel = parent.add("panel", undefined, name);
     panel.alignChildren = "left";
     for(var i = 0; i < array.length;  i++) {
@@ -124,13 +154,13 @@ function createSelectionPanel(name, array, parent) {
         cb.value = true;
         cb.onClick = function() {
             if(this.value) {
-                selectedExportOptions[this.item.name] = this.item;
+                selected[this.item.name] = this.item;
                 //alert("added " + this.item.name);
             } else {
-                delete selectedExportOptions[this.item.name];
+                delete selected[this.item.name];
                 //alert("deleted " + this.item.name);
             }
         };
-        selectedExportOptions[array[i].name] = array[i];
+        selected[array[i].name] = array[i];
     }
 };

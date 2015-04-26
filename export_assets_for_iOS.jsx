@@ -125,6 +125,7 @@ function exportAppIcon(name, iconSize, type) {
 
 function exportImage(name, scale, type) {
     for (var i = 0; i < app.activeDocument.artboards.length; i++) {
+        app.activeDocument.artboards.setActiveArtboardIndex(i);
         var activeArtboard = app.activeDocument.artboards[i];
 
         var expFolder = new Folder(folder.fsName + "/" + activeArtboard.name + ".imageset" + "/");

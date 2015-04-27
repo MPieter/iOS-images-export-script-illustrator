@@ -1,6 +1,8 @@
 /**
  * Author: Pieter Meiresone
  */
+#include "json2.js"
+
 var selectedAppIconExportOptions = {};
 var selectedImageExportOptions = {};
 
@@ -81,12 +83,7 @@ if(document && folder) {
         //         exportAppIcon(item.name, item.size, item.type);
         //     }
         // }
-        for (var key in selectedImageExportOptions) {
-            if (selectedImageExportOptions.hasOwnProperty(key)) {
-                var item = selectedImageExportOptions[key];
-                exportImage(item.name, item.scaleFactor, item.type)
-            }
-        }
+        exportImages();
 
         this.parent.parent.close();
     };
@@ -123,7 +120,7 @@ function exportAppIcon(name, iconSize, type) {
 	}
 };
 
-function exportImage(name, scale, type) {
+function exportImages() {
     for (var i = 0; i < app.activeDocument.artboards.length; i++) {
         app.activeDocument.artboards.setActiveArtboardIndex(i);
         var activeArtboard = app.activeDocument.artboards[i];
@@ -134,16 +131,47 @@ function exportImage(name, scale, type) {
             expFolder.create();
         }
 
-        var exportOptions = new ExportOptionsPNG24();
-        var type = ExportType.PNG24;
-        var fileSpec = new File(expFolder.fsName + "/" + activeArtboard.name + name + ".png");
-        exportOptions.verticalScale = scale;
-        exportOptions.horizontalScale = scale;
-        exportOptions.antiAliasing = true;
-        exportOptions.transparency = true;
-        exportOptions.artBoardClipping = true;
-        app.activeDocument.exportFile (fileSpec, type, exportOptions);
+        var jsonFileObject = {
+            images: [],
+            info: {
+                version: 1,
+                author: "xcode"
+            }
+        };
+
+        for(var key in selectedImageExportOptions) {
+            var item = selectedImageExportOptions[key];
+            jsonFileObject.images.push({
+                idiom: "universal",
+                scale: item.type,
+                filename: activeArtboard.name + item.name + ".png"
+            });
+        }
+
+        var jsonFile = new File(expFolder.fsName + "/Contents.json");
+        jsonFile.open("w");
+        jsonFile.write(JSON.stringify(jsonFileObject, null, 2));
+        jsonFile.close();
+
+        for (var key in selectedImageExportOptions) {
+            if (selectedImageExportOptions.hasOwnProperty(key)) {
+                var item = selectedImageExportOptions[key];
+                exportImage(expFolder, activeArtboard, item.name, item.scaleFactor, item.type)
+            }
+        }
     }
+}
+
+function exportImage(expFolder, activeArtboard, name, scale, type) {
+    var exportOptions = new ExportOptionsPNG24();
+    var type = ExportType.PNG24;
+    var fileSpec = new File(expFolder.fsName + "/" + activeArtboard.name + name + ".png");
+    exportOptions.verticalScale = scale;
+    exportOptions.horizontalScale = scale;
+    exportOptions.antiAliasing = true;
+    exportOptions.transparency = true;
+    exportOptions.artBoardClipping = true;
+    app.activeDocument.exportFile (fileSpec, type, exportOptions);
 }
 
 function createSelectionPanel(name, array, selected, parent) {

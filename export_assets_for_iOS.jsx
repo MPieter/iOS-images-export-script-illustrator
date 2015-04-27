@@ -252,6 +252,7 @@ function exportImage(expFolder, activeArtboard, name, scale, type) {
 function createArtboardSelectionPanel(name, selected, parent) {
     var panel = parent.add("panel", undefined, name);
     panel.alignChildren = "left";
+    panel.minimumSize.width = 300;
     panel.add("statictext", undefined, "Select which artboards you want to export.");
     for (var i = 0; i < app.activeDocument.artboards.length; i++) {
         var cb = panel.add("checkbox", undefined, "\u00A0" + app.activeDocument.artboards[i].name)
@@ -270,6 +271,7 @@ function createArtboardSelectionPanel(name, selected, parent) {
 function createSelectionPanel(name, array, selected, parent) {
     var panel = parent.add("panel", undefined, name);
     panel.alignChildren = "left";
+    panel.minimumSize.width = 400;
     for(var i = 0; i < array.length;  i++) {
         var cb = panel.add("checkbox", undefined, "\u00A0" + array[i].type);
         cb.item = array[i];

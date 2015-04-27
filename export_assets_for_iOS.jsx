@@ -133,7 +133,7 @@ function exportAppIcons() {
         while (!(app.activeDocument.artboards[activeIndex].name === artboardName)) {
             activeIndex++;
         }
-        app.activeDocument.artboards.setActiveArtboardIndex(i);
+        app.activeDocument.artboards.setActiveArtboardIndex(activeIndex);
 
 
         var expFolder = new Folder(folder.fsName + "/" + artboard.name + ".appiconset" + "/");
@@ -195,43 +195,39 @@ function exportImages() {
         while (!(app.activeDocument.artboards[activeIndex].name === artboardName)) {
             activeIndex++;
         }
-        app.activeDocument.artboards.setActiveArtboardIndex(i);
-
-        if (!selectedAppIconArtboards.hasOwnProperty(activeArtboard.name)) {
-            app.activeDocument.artboards.setActiveArtboardIndex(i);
+        app.activeDocument.artboards.setActiveArtboardIndex(activeIndex);
             
-            var expFolder = new Folder(folder.fsName + "/" + activeArtboard.name + ".imageset" + "/");
-            if (!expFolder.exists) {
-                expFolder.create();
+        var expFolder = new Folder(folder.fsName + "/" + activeArtboard.name + ".imageset" + "/");
+        if (!expFolder.exists) {
+            expFolder.create();
+        }
+
+        var jsonFileObject = {
+            images: [],
+            info: {
+                version: 1,
+                author: "xcode"
             }
+        };
 
-            var jsonFileObject = {
-                images: [],
-                info: {
-                    version: 1,
-                    author: "xcode"
-                }
-            };
+        for(var key in selectedImageExportOptions) {
+            var item = selectedImageExportOptions[key];
+            jsonFileObject.images.push({
+                idiom: "universal",
+                scale: item.type,
+                filename: activeArtboard.name + item.name + ".png"
+            });
+        }
 
-            for(var key in selectedImageExportOptions) {
+        var jsonFile = new File(expFolder.fsName + "/Contents.json");
+        jsonFile.open("w");
+        jsonFile.write(JSON.stringify(jsonFileObject, null, 2));
+        jsonFile.close();
+
+        for (var key in selectedImageExportOptions) {
+            if (selectedImageExportOptions.hasOwnProperty(key)) {
                 var item = selectedImageExportOptions[key];
-                jsonFileObject.images.push({
-                    idiom: "universal",
-                    scale: item.type,
-                    filename: activeArtboard.name + item.name + ".png"
-                });
-            }
-
-            var jsonFile = new File(expFolder.fsName + "/Contents.json");
-            jsonFile.open("w");
-            jsonFile.write(JSON.stringify(jsonFileObject, null, 2));
-            jsonFile.close();
-
-            for (var key in selectedImageExportOptions) {
-                if (selectedImageExportOptions.hasOwnProperty(key)) {
-                    var item = selectedImageExportOptions[key];
-                    exportImage(expFolder, activeArtboard, item.name, item.scaleFactor, item.type)
-                }
+                exportImage(expFolder, activeArtboard, item.name, item.scaleFactor, item.type)
             }
         }
     }

@@ -3,6 +3,7 @@
  */
 #include "json2.js"
 
+var selectedAppIconArtboards = {};
 var selectedAppIconExportOptions = {};
 var selectedImageExportOptions = {};
 
@@ -69,6 +70,7 @@ if(document && folder) {
     var dialog = new Window("dialog","Select export sizes");
     var osGroup = dialog.add("group");
 
+    var appIconArtboardCheckboxes = createAppIconSelectionPanel(osGroup);
     var iosCheckboxes = createSelectionPanel("App Icon", iosAppIconExportOptions, selectedAppIconExportOptions, osGroup);
     var imageCheckboxes = createSelectionPanel("Images", iosImageExportOptions, selectedImageExportOptions, osGroup);
 
@@ -77,12 +79,7 @@ if(document && folder) {
     var cancelButton = buttonGroup.add("button", undefined, "Cancel");
     
     okButton.onClick = function() {
-        // for (var key in selectedAppIconExportOptions) {
-        //     if (selectedAppIconExportOptions.hasOwnProperty(key)) {
-        //         var item = selectedAppIconExportOptions[key];
-        //         exportAppIcon(item.name, item.size, item.type);
-        //     }
-        // }
+        exportAppIcons();
         exportImages();
 
         this.parent.parent.close();
@@ -95,16 +92,30 @@ if(document && folder) {
     dialog.show();
 }
 
-function exportAppIcon(name, iconSize, type) {
-    var expFolder = new Folder(folder.fsName);
+function exportAppIcons() {
+    for (var artboardName in selectedAppIconArtboards) {
+        var artboard = app.activeDocument.artboards.getByName(artboardName);
+        var activeIndex = 0;
+        while (!(app.activeDocument.artboards[activeIndex].name === artboardName)) {
+            activeIndex++;
+        }
+        app.activeDocument.artboards.setActiveArtboardIndex(i);
 
-	if (!expFolder.exists) {
-		expFolder.create();
-	}
 
-    var activeArtboard = app.activeDocument.artboards[app.activeDocument.artboards.getActiveArtboardIndex()];
+        var expFolder = new Folder(folder.fsName + "/" + artboard.name + ".appiconset" + "/");
+        if (!expFolder.exists) {
+            expFolder.create();
+        }
 
-    var scale = iconSize / activeArtboard.artboardRect[2] * 100;
+        for (var key in selectedAppIconExportOptions) {
+            var item = selectedAppIconExportOptions[key];
+            exportAppIcon(artboard, expFolder, item.name, item.size, item.type);
+        }
+    }
+};
+
+function exportAppIcon(artboard, expFolder, name, iconSize, type) {
+    var scale = iconSize * 100 / Math.abs(artboard.artboardRect[1] - artboard.artboardRect[3]);
 	
 	if ( app.documents.length > 0 ) 
 	{
@@ -160,7 +171,7 @@ function exportImages() {
             }
         }
     }
-}
+};
 
 function exportImage(expFolder, activeArtboard, name, scale, type) {
     var exportOptions = new ExportOptionsPNG24();
@@ -172,7 +183,24 @@ function exportImage(expFolder, activeArtboard, name, scale, type) {
     exportOptions.transparency = true;
     exportOptions.artBoardClipping = true;
     app.activeDocument.exportFile (fileSpec, type, exportOptions);
-}
+};
+
+function createAppIconSelectionPanel(parent) {
+    var panel = parent.add("panel", undefined, "Select App Icons");
+    panel.alignChildren = "left";
+    for (var i = 0; i < app.activeDocument.artboards.length; i++) {
+        var cb = panel.add("checkbox", undefined, "\u00A0" + app.activeDocument.artboards[i].name)
+        cb.item = app.activeDocument.artboards[i];
+        cb.value = false;
+        cb.onClick = function() {
+            if (this.value) {
+                selectedAppIconArtboards[this.item.name] = this.item;
+            } else {
+                delete selectedAppIconArtboards[this.item.name];
+            }
+        };
+    }
+};
 
 function createSelectionPanel(name, array, selected, parent) {
     var panel = parent.add("panel", undefined, name);

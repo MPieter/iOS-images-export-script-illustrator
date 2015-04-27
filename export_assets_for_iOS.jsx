@@ -9,40 +9,69 @@ var selectedImageExportOptions = {};
 
 var iosAppIconExportOptions = [
     {
-        name: "Icon-60@2",
-        size: 120,
-        type: "Home screen on iPhone/iPod Touch with retina display"
+        name: "Icon-29@2.png",
+        size: 58,
+        type: "Spotlight iOS 5,6; Settings iOS 5 - 8",
+        idiom: "iphone",
+        sizeJSON: "29x29",
+        scale: "2x"
     },
     {
-        name: "Icon-60@3",
+        name: "Icon-60@2.png",
+        size: 120,
+        type: "Home screen on iPhone/iPod Touch with retina display",
+        idiom: "iphone",
+        sizeJSON: "60x60",
+        scale: "2x"
+    },
+    {
+        name: "Icon-60@3.png",
         size: 180,
-        type: "Home screen on iPhone 6 Plus"
+        type: "Home screen on iPhone 6 Plus",
+        idiom: "iphone",
+        sizeJSON: "60x60",
+        scale: "3x"
     },
     {
-        name: "Icon-76",
+        name: "Icon-76.png",
         size: 76,
-        type: "Home screen on iPad"
+        type: "Home screen on iPad",
+        idiom: "ipad",
+        sizeJSON: "76x76",
+        scale: "1x"
     },
     {
-        name: "Icon-76@2",
+        name: "Icon-76@2.png",
         size: 152,
-        type: "Home screen on iPad with retina display"
+        type: "Home screen on iPad with retina display",
+        idiom: "ipad",
+        sizeJSON: "76x76",
+        scale: "2x"
     },
+    // {
+    //     name: "Icon-Small-40",
+    //     size: 40,
+    //     type: "Spotlight",
+    //     idiom: "iphone",
+    //     sizeJSON: "40x40",
+    //     scale: "1x"
+    // },
     {
-        name: "Icon-Small-40",
-        size: 40,
-        type: "Spotlight"
-    },
-    {
-        name: "Icon-Small-40@2",
+        name: "Icon-Small-40@2.png",
         size: 80,
-        type: "Spotlight on devices with retina display"
+        type: "Spotlight on devices with retina display",
+        idiom: "iphone",
+        sizeJSON: "40x40",
+        scale: "2x"
     },
     {
-        name: "Icon-Small-40@3",
+        name: "Icon-Small-40@3.png",
         size: 120,
-        type: "Spotlight on iPhone 6 Plus"
-    },
+        type: "Spotlight on iPhone 6 Plus",
+        idiom: "iphone",
+        sizeJSON: "40x40",
+        scale: "3x"
+    }
 ];
 
 var iosImageExportOptions = [
@@ -107,6 +136,29 @@ function exportAppIcons() {
             expFolder.create();
         }
 
+        var jsonFileObject = {
+            images: [],
+            info: {
+                version: 1,
+                author: "xcode"
+            }
+        };
+
+        for(var key in selectedAppIconExportOptions) {
+            var item = selectedAppIconExportOptions[key];
+            jsonFileObject.images.push({
+                idiom: item.idiom,
+                size: item.sizeJSON,
+                filename: item.name,
+                scale: item.scale
+            });
+        }
+
+        var jsonFile = new File(expFolder.fsName + "/Contents.json");
+        jsonFile.open("w");
+        jsonFile.write(JSON.stringify(jsonFileObject, null, 2));
+        jsonFile.close();
+
         for (var key in selectedAppIconExportOptions) {
             var item = selectedAppIconExportOptions[key];
             exportAppIcon(artboard, expFolder, item.name, item.size, item.type);
@@ -121,7 +173,7 @@ function exportAppIcon(artboard, expFolder, name, iconSize, type) {
 	{
 		var exportOptions = new ExportOptionsPNG24();
 		var type = ExportType.PNG24;
-		var fileSpec = new File(expFolder.fsName + "/" + name + ".png");
+		var fileSpec = new File(expFolder.fsName + "/" + name);
 		exportOptions.verticalScale = scale;
 		exportOptions.horizontalScale = scale;
 		exportOptions.antiAliasing = true;
@@ -133,41 +185,43 @@ function exportAppIcon(artboard, expFolder, name, iconSize, type) {
 
 function exportImages() {
     for (var i = 0; i < app.activeDocument.artboards.length; i++) {
-        app.activeDocument.artboards.setActiveArtboardIndex(i);
         var activeArtboard = app.activeDocument.artboards[i];
 
-        var expFolder = new Folder(folder.fsName + "/" + activeArtboard.name + ".imageset" + "/");
-
-        if (!expFolder.exists) {
-            expFolder.create();
-        }
-
-        var jsonFileObject = {
-            images: [],
-            info: {
-                version: 1,
-                author: "xcode"
+        if (!selectedAppIconArtboards.hasOwnProperty(activeArtboard.name)) {
+            app.activeDocument.artboards.setActiveArtboardIndex(i);
+            
+            var expFolder = new Folder(folder.fsName + "/" + activeArtboard.name + ".imageset" + "/");
+            if (!expFolder.exists) {
+                expFolder.create();
             }
-        };
 
-        for(var key in selectedImageExportOptions) {
-            var item = selectedImageExportOptions[key];
-            jsonFileObject.images.push({
-                idiom: "universal",
-                scale: item.type,
-                filename: activeArtboard.name + item.name + ".png"
-            });
-        }
+            var jsonFileObject = {
+                images: [],
+                info: {
+                    version: 1,
+                    author: "xcode"
+                }
+            };
 
-        var jsonFile = new File(expFolder.fsName + "/Contents.json");
-        jsonFile.open("w");
-        jsonFile.write(JSON.stringify(jsonFileObject, null, 2));
-        jsonFile.close();
-
-        for (var key in selectedImageExportOptions) {
-            if (selectedImageExportOptions.hasOwnProperty(key)) {
+            for(var key in selectedImageExportOptions) {
                 var item = selectedImageExportOptions[key];
-                exportImage(expFolder, activeArtboard, item.name, item.scaleFactor, item.type)
+                jsonFileObject.images.push({
+                    idiom: "universal",
+                    scale: item.type,
+                    filename: activeArtboard.name + item.name + ".png"
+                });
+            }
+
+            var jsonFile = new File(expFolder.fsName + "/Contents.json");
+            jsonFile.open("w");
+            jsonFile.write(JSON.stringify(jsonFileObject, null, 2));
+            jsonFile.close();
+
+            for (var key in selectedImageExportOptions) {
+                if (selectedImageExportOptions.hasOwnProperty(key)) {
+                    var item = selectedImageExportOptions[key];
+                    exportImage(expFolder, activeArtboard, item.name, item.scaleFactor, item.type)
+                }
             }
         }
     }

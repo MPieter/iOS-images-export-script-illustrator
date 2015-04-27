@@ -5,6 +5,8 @@
 
 var selectedAppIconArtboards = {};
 var selectedAppIconExportOptions = {};
+
+var selectedImagesArtboards = {};
 var selectedImageExportOptions = {};
 
 var iosAppIconExportOptions = [
@@ -97,11 +99,14 @@ var document = app.activeDocument;
 
 if(document && folder) {
     var dialog = new Window("dialog","Select export sizes");
-    var osGroup = dialog.add("group");
-
-    var appIconArtboardCheckboxes = createAppIconSelectionPanel(osGroup);
-    var iosCheckboxes = createSelectionPanel("App Icon", iosAppIconExportOptions, selectedAppIconExportOptions, osGroup);
-    var imageCheckboxes = createSelectionPanel("Images", iosImageExportOptions, selectedImageExportOptions, osGroup);
+    
+    var appIconGroup = dialog.add("group");
+    createArtboardSelectionPanel("Select App Icons", selectedAppIconArtboards, appIconGroup);
+    createSelectionPanel("Export options for App Icon", iosAppIconExportOptions, selectedAppIconExportOptions, appIconGroup);
+    
+    var imageGroup = dialog.add("group");
+    createArtboardSelectionPanel("Select image assets", selectedImagesArtboards, imageGroup);
+    createSelectionPanel("Export options for Images", iosImageExportOptions, selectedImageExportOptions, imageGroup);
 
     var buttonGroup = dialog.add("group");
     var okButton = buttonGroup.add("button", undefined, "Export");
@@ -184,8 +189,13 @@ function exportAppIcon(artboard, expFolder, name, iconSize, type) {
 };
 
 function exportImages() {
-    for (var i = 0; i < app.activeDocument.artboards.length; i++) {
-        var activeArtboard = app.activeDocument.artboards[i];
+    for (var artboardName in selectedImagesArtboards) {
+        var activeArtboard = app.activeDocument.artboards.getByName(artboardName);
+        var activeIndex = 0;
+        while (!(app.activeDocument.artboards[activeIndex].name === artboardName)) {
+            activeIndex++;
+        }
+        app.activeDocument.artboards.setActiveArtboardIndex(i);
 
         if (!selectedAppIconArtboards.hasOwnProperty(activeArtboard.name)) {
             app.activeDocument.artboards.setActiveArtboardIndex(i);
@@ -239,18 +249,19 @@ function exportImage(expFolder, activeArtboard, name, scale, type) {
     app.activeDocument.exportFile (fileSpec, type, exportOptions);
 };
 
-function createAppIconSelectionPanel(parent) {
-    var panel = parent.add("panel", undefined, "Select App Icons");
+function createArtboardSelectionPanel(name, selected, parent) {
+    var panel = parent.add("panel", undefined, name);
     panel.alignChildren = "left";
+    panel.add("statictext", undefined, "Select which artboards you want to export.");
     for (var i = 0; i < app.activeDocument.artboards.length; i++) {
         var cb = panel.add("checkbox", undefined, "\u00A0" + app.activeDocument.artboards[i].name)
         cb.item = app.activeDocument.artboards[i];
         cb.value = false;
         cb.onClick = function() {
             if (this.value) {
-                selectedAppIconArtboards[this.item.name] = this.item;
+                selected[this.item.name] = this.item;
             } else {
-                delete selectedAppIconArtboards[this.item.name];
+                delete selected[this.item.name];
             }
         };
     }

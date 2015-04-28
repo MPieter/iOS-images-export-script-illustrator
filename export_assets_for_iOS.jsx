@@ -11,7 +11,7 @@ var selectedImageExportOptions = {};
 
 var iosAppIconExportOptions = [
     {
-        name: "Icon-29@2.png",
+        name: "-29@2.png",
         size: 58,
         type: "Spotlight iOS 5,6; Settings iOS 5 - 8",
         idiom: "iphone",
@@ -19,7 +19,7 @@ var iosAppIconExportOptions = [
         scale: "2x"
     },
     {
-        name: "Icon-60@2.png",
+        name: "-60@2.png",
         size: 120,
         type: "Home screen on iPhone/iPod Touch with retina display",
         idiom: "iphone",
@@ -27,7 +27,7 @@ var iosAppIconExportOptions = [
         scale: "2x"
     },
     {
-        name: "Icon-60@3.png",
+        name: "-60@3.png",
         size: 180,
         type: "Home screen on iPhone 6 Plus",
         idiom: "iphone",
@@ -35,7 +35,7 @@ var iosAppIconExportOptions = [
         scale: "3x"
     },
     {
-        name: "Icon-76.png",
+        name: "-76.png",
         size: 76,
         type: "Home screen on iPad",
         idiom: "ipad",
@@ -43,7 +43,7 @@ var iosAppIconExportOptions = [
         scale: "1x"
     },
     {
-        name: "Icon-76@2.png",
+        name: "-76@2.png",
         size: 152,
         type: "Home screen on iPad with retina display",
         idiom: "ipad",
@@ -51,7 +51,7 @@ var iosAppIconExportOptions = [
         scale: "2x"
     },
     // {
-    //     name: "Icon-Small-40",
+    //     name: "-Small-40",
     //     size: 40,
     //     type: "Spotlight",
     //     idiom: "iphone",
@@ -59,7 +59,7 @@ var iosAppIconExportOptions = [
     //     scale: "1x"
     // },
     {
-        name: "Icon-Small-40@2.png",
+        name: "-Small-40@2.png",
         size: 80,
         type: "Spotlight on devices with retina display",
         idiom: "iphone",
@@ -67,7 +67,7 @@ var iosAppIconExportOptions = [
         scale: "2x"
     },
     {
-        name: "Icon-Small-40@3.png",
+        name: "-Small-40@3.png",
         size: 120,
         type: "Spotlight on iPhone 6 Plus",
         idiom: "iphone",
@@ -156,7 +156,7 @@ function exportAppIcons() {
             jsonFileObject.images.push({
                 idiom: item.idiom,
                 size: item.sizeJSON,
-                filename: item.name,
+                filename: artboard.name + item.name,
                 scale: item.scale
             });
         }
@@ -168,7 +168,7 @@ function exportAppIcons() {
 
         for (var key in selectedAppIconExportOptions) {
             var item = selectedAppIconExportOptions[key];
-            exportAppIcon(artboard, expFolder, item.name, item.size, item.type);
+            exportAppIcon(artboard, expFolder,artboard.name + item.name, item.size, item.type);
         }
     }
 };

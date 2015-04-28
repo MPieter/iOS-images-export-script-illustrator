@@ -98,14 +98,16 @@ var folder = Folder.selectDialog("Select export directory");
 var document = app.activeDocument;
 
 if(document && folder) {
-    var dialog = new Window("dialog","Select export sizes");
+    var dialog = new Window("dialog","Export assets for iOS");
     
     var appIconGroup = dialog.add("group");
-    createArtboardSelectionPanel("Select App Icons", selectedAppIconArtboards, appIconGroup);
+    appIconGroup.alignChildren = "top";
+    createArtboardSelectionPanel("Select artboards to export as App Icons", selectedAppIconArtboards, appIconGroup);
     createSelectionPanel("Export options for App Icon", iosAppIconExportOptions, selectedAppIconExportOptions, appIconGroup);
     
     var imageGroup = dialog.add("group");
-    createArtboardSelectionPanel("Select image assets", selectedImagesArtboards, imageGroup);
+    imageGroup.alignChildren = "top";
+    createArtboardSelectionPanel("Select artboards to export as images", selectedImagesArtboards, imageGroup);
     createSelectionPanel("Export options for Images", iosImageExportOptions, selectedImageExportOptions, imageGroup);
 
     var buttonGroup = dialog.add("group");
@@ -249,9 +251,23 @@ function createArtboardSelectionPanel(name, selected, parent) {
     var panel = parent.add("panel", undefined, name);
     panel.alignChildren = "left";
     panel.minimumSize.width = 300;
-    panel.add("statictext", undefined, "Select which artboards you want to export.");
+    panel.orientation = "row";
+    panel.alignChildren = "top";
+
+    var CHECKBOXES_PER_PANEL = 10;
+    var totalPanels = Math.ceil(app.activeDocument.artboards.length / CHECKBOXES_PER_PANEL);
+    var groups = []
+    for (var i = 0; i < totalPanels; i++) {
+        var group = panel.add("group", undefined, name);
+        group.orientation = "column";
+        group.alignChildren = "left";
+        groups.push(group);
+    };
+
     for (var i = 0; i < app.activeDocument.artboards.length; i++) {
-        var cb = panel.add("checkbox", undefined, "\u00A0" + app.activeDocument.artboards[i].name)
+        var destGroup = groups[Math.floor(i / CHECKBOXES_PER_PANEL)];
+
+        var cb = destGroup.add("checkbox", undefined, "\u00A0" + app.activeDocument.artboards[i].name)
         cb.item = app.activeDocument.artboards[i];
         cb.value = false;
         cb.onClick = function() {

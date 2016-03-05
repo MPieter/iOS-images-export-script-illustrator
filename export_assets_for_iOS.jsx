@@ -73,6 +73,14 @@ var iosAppIconExportOptions = [
         idiom: "iphone",
         sizeJSON: "40x40",
         scale: "3x"
+    },
+    {
+		name: "-iPad-835@2.png",
+		size: 167,
+		type: "Home screen on iPad Pro",
+		idiom: "ipad",
+		sizeJSON: "83.5x83.5",
+		scale: "2x"
     }
 ];
 
@@ -183,7 +191,7 @@ function exportAppIcon(artboard, expFolder, name, iconSize, type) {
 		var fileSpec = new File(expFolder.fsName + "/" + name);
 		exportOptions.verticalScale = scale;
 		exportOptions.horizontalScale = scale;
-		exportOptions.antiAliasing = true;
+		exportOptions.antiAliasing = false;
 		exportOptions.transparency = true;
 		exportOptions.artBoardClipping = true;
 		app.activeDocument.exportFile (fileSpec, type, exportOptions);

@@ -7,7 +7,7 @@ Both app icons and standard images can be exported easily. App icons are exporte
 
 Usage
 ---
-1. Import the script into Adobe Illustrator (to make the script appear under the scripts menu). To import the script save both `export_assets_for_iOS.jsx` and `json2.js` scripts into the `/Adobe Illustrator CC 2014/Presets/{localization}/Scripts/` folder. Restart Adobe Illustrator for the changes to have effect!
+1. Import the script into Adobe Illustrator (to make the script appear under the scripts menu). To import the script save both `export_assets_for_iOS.jsx` and `json2.js` scripts into the `/Adobe Illustrator CC 2017/Presets/{localization}/Scripts/` folder. Restart Adobe Illustrator for the changes to have effect!
 2. Open the Illustrator file that includes the artboards you want to export.
 3. Select the script from the scripts menu: `File > Scripts`
 4. Choose the directory where the images should be exported to. This script is designed to fully integrate with the Xcode IDE, so the correct directory would be `Images.xcassets` folder in your Xcode project.
@@ -19,20 +19,31 @@ For example, if we choose to export the Artboard `AppIcon` as an application ico
 
 ```
 Images.xcassets
-|- AppIcon.appiconset
-   |- AppIcon-29@2.png
-   |- AppIcon-60@2.png
-   |- AppIcon-60@3.png
-   |- AppIcon-76.png
-   |- AppIcon-76@2.png
-   |- AppIcon-Small-40@.png
-   |- AppIcon-Small-40@3.png
-   |- Contents.json
-|- settings.imageset
-   |- settings.png
-   |- settings@2x.png
-   |- settings@3x.png
-   |- Contents.json
+├── AppIcon.appiconset
+│   ├── AppIcon-20.png
+│   ├── AppIcon-20@2x.png
+│   ├── AppIcon-20@3x.png
+│   ├── AppIcon-29@2x.png
+│   ├── AppIcon-29@3x.png
+│   ├── AppIcon-40.png
+│   ├── AppIcon-40@2x.png
+│   ├── AppIcon-60@2x.png
+│   ├── AppIcon-60@3x.png
+│   ├── AppIcon-76.png
+│   ├── AppIcon-76@2x.png
+│   ├── AppIcon-Artwork.png
+│   ├── AppIcon-Small-40@2x.png
+│   ├── AppIcon-Small-40@3x.png
+│   ├── AppIcon-iPad-20@2x.png
+│   ├── AppIcon-iPad-29.png
+│   ├── AppIcon-iPad-29@2x.png
+│   ├── AppIcon-iPad-835@2x.png
+│   └── Contents.json
+|── settings.imageset
+│   ├── settings.png
+│   ├── settings@2x.png
+│   ├── settings@3x.png
+│   └── Contents.json
 ```
 
 Features

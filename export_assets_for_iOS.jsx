@@ -11,15 +11,39 @@ var selectedImageExportOptions = {};
 
 var iosAppIconExportOptions = [
     {
-        name: "-29@2.png",
+        name: "-20@2x.png",
+        size: 40,
+        type: "Notification for iPhone with retina display (2x)",
+        idiom: "iphone",
+        sizeJSON: "20x20",
+        scale: "2x"
+    },
+    {
+        name: "-20@3x.png",
+        size: 60,
+        type: "Notification for iPhone with retina display (3x)",
+        idiom: "iphone",
+        sizeJSON: "20x20",
+        scale: "3x"
+    },
+    {
+        name: "-29@2x.png",
         size: 58,
-        type: "Spotlight iOS 5,6; Settings iOS 5 - 8",
+        type: "Spotlight iOS 5,6; Settings iOS 5 - 11",
         idiom: "iphone",
         sizeJSON: "29x29",
         scale: "2x"
     },
     {
-        name: "-60@2.png",
+        name: "-29@3x.png",
+        size: 87,
+        type: "Spotlight iOS 5,6; Settings iOS 5 - 11",
+        idiom: "iphone",
+        sizeJSON: "29x29",
+        scale: "3x"
+    },
+    {
+        name: "-60@2x.png",
         size: 120,
         type: "Home screen on iPhone/iPod Touch with retina display",
         idiom: "iphone",
@@ -27,12 +51,28 @@ var iosAppIconExportOptions = [
         scale: "2x"
     },
     {
-        name: "-60@3.png",
+        name: "-60@3x.png",
         size: 180,
         type: "Home screen on iPhone 6 Plus",
         idiom: "iphone",
         sizeJSON: "60x60",
         scale: "3x"
+    },
+    {
+        name: "-iPad-29.png",
+        size: 29,
+        type: "settings on iPad for iOS 5 - 11",
+        idiom: "ipad",
+        sizeJSON: "29x29",
+        scale: "1x"
+    },
+    {
+        name: "-iPad-29@2x.png",
+        size: 58,
+        type: "settings on iPad with retina display for iOS 5 - 11",
+        idiom: "ipad",
+        sizeJSON: "29x29",
+        scale: "2x"
     },
     {
         name: "-76.png",
@@ -43,15 +83,15 @@ var iosAppIconExportOptions = [
         scale: "1x"
     },
     {
-        name: "-76@2.png",
+        name: "-76@2x.png",
         size: 152,
         type: "Home screen on iPad with retina display",
         idiom: "ipad",
         sizeJSON: "76x76",
         scale: "2x"
     },
-    // {
-    //     name: "-Small-40",
+    //{
+    //     name: "-Small-40.png",
     //     size: 40,
     //     type: "Spotlight",
     //     idiom: "iphone",
@@ -59,7 +99,7 @@ var iosAppIconExportOptions = [
     //     scale: "1x"
     // },
     {
-        name: "-Small-40@2.png",
+        name: "-Small-40@2x.png",
         size: 80,
         type: "Spotlight on devices with retina display",
         idiom: "iphone",
@@ -67,7 +107,7 @@ var iosAppIconExportOptions = [
         scale: "2x"
     },
     {
-        name: "-Small-40@3.png",
+        name: "-Small-40@3x.png",
         size: 120,
         type: "Spotlight on iPhone 6 Plus",
         idiom: "iphone",
@@ -75,12 +115,52 @@ var iosAppIconExportOptions = [
         scale: "3x"
     },
     {
-		name: "-iPad-835@2.png",
+        name: "-40.png",
+        size: 40,
+        type: "Spotlight for iPad",
+        idiom: "ipad",
+        sizeJSON: "40x40",
+        scale: "1x"
+    },
+    {
+        name: "-40@2x.png",
+        size: 80,
+        type: "Spotlight for iPad with retina display",
+        idiom: "ipad",
+        sizeJSON: "40x40",
+        scale: "2x"
+    },
+    {
+        name: "-20.png",
+        size: 20,
+        type: "Notification for iPad",
+        idiom: "ipad",
+        sizeJSON: "20x20",
+        scale: "1x"
+    },
+    {
+        name: "-iPad-20@2x.png",
+        size: 40,
+        type: "Notification for iPad with retina display",
+        idiom: "ipad",
+        sizeJSON: "20x20",
+        scale: "2x"
+    },
+    {
+		name: "-iPad-835@2x.png",
 		size: 167,
 		type: "Home screen on iPad Pro",
 		idiom: "ipad",
 		sizeJSON: "83.5x83.5",
 		scale: "2x"
+    },
+    {
+        name: "-Artwork.png",
+        size: 1024,
+        type: "Icon on App Store",
+        idiom: "ios-marketing",
+        sizeJSON: "1024x1024",
+        scale: "1x"
     }
 ];
 

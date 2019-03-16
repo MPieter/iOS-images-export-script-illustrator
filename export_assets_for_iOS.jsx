@@ -216,6 +216,10 @@ if(document && folder) {
     dialog.show();
 }
 
+function spacesToHyphens(string) {
+    return string.replace(/\s+/g, '-');
+}
+
 function exportAppIcons() {
     for (var artboardName in selectedAppIconArtboards) {
         var artboard = app.activeDocument.artboards.getByName(artboardName);
@@ -238,13 +242,17 @@ function exportAppIcons() {
                 author: "xcode"
             }
         };
-
+        
         for(var key in selectedAppIconExportOptions) {
             var item = selectedAppIconExportOptions[key];
+            
+            //The app.activeDocument.exportFile function causes all spaces to be 
+            //converted to hyphens, thus we should use an unspaced name
+            var unspacedName = spacesToHyphens(artboard.name + item.name);
             jsonFileObject.images.push({
                 idiom: item.idiom,
                 size: item.sizeJSON,
-                filename: artboard.name + item.name,
+                filename: unspacedName,
                 scale: item.scale
             });
         }
@@ -256,7 +264,10 @@ function exportAppIcons() {
 
         for (var key in selectedAppIconExportOptions) {
             var item = selectedAppIconExportOptions[key];
-            exportAppIcon(artboard, expFolder,artboard.name + item.name, item.size, item.type);
+            //The app.activeDocument.exportFile function causes all spaces to be 
+            //converted to hyphens, thus we should use an unspaced name
+            var unspacedName = spacesToHyphens(artboard.name + item.name);
+            exportAppIcon(artboard, expFolder, unspacedName, item.size, item.type);
         }
     }
 };
@@ -302,10 +313,13 @@ function exportImages() {
 
         for(var key in selectedImageExportOptions) {
             var item = selectedImageExportOptions[key];
+            //The app.activeDocument.exportFile function causes all spaces to be 
+            //converted to hyphens, thus we should use an unspaced name
+            var unspacedName = spacesToHyphens(activeArtboard.name + item.name + ".png");
             jsonFileObject.images.push({
                 idiom: "universal",
                 scale: item.type,
-                filename: activeArtboard.name + item.name + ".png"
+                filename: unspacedName
             });
         }
 
@@ -326,7 +340,11 @@ function exportImages() {
 function exportImage(expFolder, activeArtboard, name, scale, type) {
     var exportOptions = new ExportOptionsPNG24();
     var type = ExportType.PNG24;
-    var fileSpec = new File(expFolder.fsName + "/" + activeArtboard.name + name + ".png");
+    //The app.activeDocument.exportFile function causes all spaces to be 
+    //converted to hyphens, thus we should use an unspaced name
+    var unspacedName = spacesToHyphens(activeArtboard.name + name + ".png");
+
+    var fileSpec = new File(expFolder.fsName + "/" + unspacedName);
     exportOptions.verticalScale = scale;
     exportOptions.horizontalScale = scale;
     exportOptions.antiAliasing = true;

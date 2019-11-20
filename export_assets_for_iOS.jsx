@@ -11,76 +11,148 @@ var selectedImageExportOptions = {};
 
 var iosAppIconExportOptions = [
     {
-        name: "-29@2.png",
+        name: "iPhone-20@2x.png",
+        size: 40,
+        type: "iPhone Notification iOS 7-13 (2x)",
+        idiom: "iphone",
+        sizeJSON: "20x20",
+        scale: "2x"
+    },
+    {
+        name: "iPhone-20@3x.png",
+        size: 60,
+        type: "iPhone Notification iOS 7-13 (3x)",
+        idiom: "iphone",
+        sizeJSON: "20x20",
+        scale: "3x"
+    },
+    {
+        name: "iPhone-29@2x.png",
         size: 58,
-        type: "Spotlight iOS 5,6; Settings iOS 5 - 8",
+        type: "iPhone Settings iOS 7-13 (2x)",
         idiom: "iphone",
         sizeJSON: "29x29",
         scale: "2x"
     },
     {
-        name: "-60@2.png",
+        name: "iPhone-29@3x.png",
+        size: 87,
+        type: "iPhone Settings iOS 7-13 (3x)",
+        idiom: "iphone",
+        sizeJSON: "29x29",
+        scale: "3x"
+    },
+    {
+        name: "iPhone-40@2x.png",
+        size: 80,
+        type: "iPhone Spotlight iOS 7-13 (2x)",
+        idiom: "iphone",
+        sizeJSON: "40x40",
+        scale: "2x"
+    },
+    {
+        name: "iPhone-40@3x.png",
         size: 120,
-        type: "Home screen on iPhone/iPod Touch with retina display",
+        type: "iPhone Spotlight iOS 7-13 (3x)",
+        idiom: "iphone",
+        sizeJSON: "40x40",
+        scale: "3x"
+    },
+    {
+        name: "iPhone-60@2x.png",
+        size: 120,
+        type: "iPhone App iOS 7-13 (2x)",
         idiom: "iphone",
         sizeJSON: "60x60",
         scale: "2x"
     },
     {
-        name: "-60@3.png",
+        name: "iPhone-60@3x.png",
         size: 180,
-        type: "Home screen on iPhone 6 Plus",
+        type: "iPhone App iOS 7-13 (3x)",
         idiom: "iphone",
         sizeJSON: "60x60",
         scale: "3x"
     },
     {
-        name: "-76.png",
+        name: "-iPad-20.png",
+        size: 20,
+        type: "iPad Notifications iOS 7-13 (1x)",
+        idiom: "ipad",
+        sizeJSON: "20x20",
+        scale: "1x"
+    },
+    {
+        name: "-iPad-20@2x.png",
+        size: 40,
+        type: "iPad Notifications iOS 7-13 (2x)",
+        idiom: "ipad",
+        sizeJSON: "20x20",
+        scale: "2x"
+    },
+    {
+        name: "-iPad-29.png",
+        size: 29,
+        type: "iPad Settings iOS 7-13 (1x)",
+        idiom: "ipad",
+        sizeJSON: "29x29",
+        scale: "1x"
+    },
+    {
+        name: "-iPad-29@2x.png",
+        size: 58,
+        type: "iPad Settings iOS 7-13 (2x)",
+        idiom: "ipad",
+        sizeJSON: "29x29",
+        scale: "2x"
+    },
+    {
+        name: "-iPad-40.png",
+        size: 40,
+        type: "iPad Spotlight iOS 7-13 (1x)",
+        idiom: "ipad",
+        sizeJSON: "40x40",
+        scale: "1x"
+    },
+    {
+        name: "-iPad-40@2x.png",
+        size: 80,
+        type: "iPad Spotlight iOS 7-13 (2x)",
+        idiom: "ipad",
+        sizeJSON: "40x40",
+        scale: "2x"
+    },
+    {
+        name: "-iPad-76.png",
         size: 76,
-        type: "Home screen on iPad",
+        type: "iPad App iOS 7-13 (1x)",
         idiom: "ipad",
         sizeJSON: "76x76",
         scale: "1x"
     },
     {
-        name: "-76@2.png",
+        name: "-iPad-76@2x.png",
         size: 152,
-        type: "Home screen on iPad with retina display",
+        type: "iPad App iOS 7-13 (2x)",
         idiom: "ipad",
         sizeJSON: "76x76",
         scale: "2x"
     },
-    // {
-    //     name: "-Small-40",
-    //     size: 40,
-    //     type: "Spotlight",
-    //     idiom: "iphone",
-    //     sizeJSON: "40x40",
-    //     scale: "1x"
-    // },
     {
-        name: "-Small-40@2.png",
-        size: 80,
-        type: "Spotlight on devices with retina display",
-        idiom: "iphone",
-        sizeJSON: "40x40",
+        name: "-iPad-167@2x.png",
+        size: 167,
+        type: "iPad Pro (12.9-inch) App iOS 7-13 (2x)",
+        idiom: "ipad",
+        sizeJSON: "83.5x83.5",
         scale: "2x"
     },
     {
-        name: "-Small-40@3.png",
-        size: 120,
-        type: "Spotlight on iPhone 6 Plus",
-        idiom: "iphone",
-        sizeJSON: "40x40",
-        scale: "3x"
-    },
-    {
-		name: "-iPad-835@2.png",
-		size: 167,
-		type: "Home screen on iPad Pro",
-		idiom: "ipad",
-		sizeJSON: "83.5x83.5",
-		scale: "2x"
+        name: "AppStore-Artwork-1024.png",
+        size: 1024,
+        type: "App Store",
+        idiom: "ios-marketing",
+        sizeJSON: "1024x1024",
+        scale: "1x"
     }
 ];
 

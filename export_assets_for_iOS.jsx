@@ -179,14 +179,15 @@ var document = app.activeDocument;
 
 if(document && folder) {
     var dialog = new Window("dialog","Export assets for iOS");
+    var imageGroup = dialog.add("group");
+    imageGroup.alignChildren = "top";
     
     var appIconGroup = dialog.add("group");
     appIconGroup.alignChildren = "top";
-    createArtboardSelectionPanel("Select artboards to export as App Icons", selectedAppIconArtboards, appIconGroup);
-    createSelectionPanel("Export options for App Icon", iosAppIconExportOptions, selectedAppIconExportOptions, appIconGroup);
+
+    createArtboardSelectionPanel("Select artboards to export as App Icons", selectedAppIconArtboards, imageGroup);
+    createSelectionPanel("Export options for App Icon", iosAppIconExportOptions, selectedAppIconExportOptions, imageGroup);
     
-    var imageGroup = dialog.add("group");
-    imageGroup.alignChildren = "top";
     createArtboardSelectionPanel("Select artboards to export as images", selectedImagesArtboards, imageGroup);
     createSelectionPanel("Export options for Images", iosImageExportOptions, selectedImageExportOptions, imageGroup);
 
